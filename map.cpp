@@ -6,19 +6,22 @@
 #include <cstring>
 #include "map.h"
 #include "snake.h"
+#include "Controll.h"
 
 using namespace std;
 Snake s;
+Controll c;
 
 void Map::render()
 {
+
     initscr();
     resize_term(60, 100);
 
     border('+', '+', '+', '+', '*', '*', '*', '*');
     refresh();
 
-    mvprintw(2, 2, "<test>");
+    mvprintw(2, 2, "<snake game>");
 
     WINDOW *win1;
     win1 = newwin(25, 25, 3, 3);
@@ -30,14 +33,20 @@ void Map::render()
         for (int j = 0; j < 25; j++)
         {
             wprintw(win1, "%c", v[i][j]);
+            if (v[i][j] == '0')
+                v[i][j] = ' ';
             if (v[i][j] == '@')
             {
-                s.position_x = i;
-                s.position_y = j;
+                s.head_x = j;
+                s.head_y = i;
+                v[i][j] = ' ';
             }
         }
     }
-    s.Move(v, s.position_x, s.position_y);
+    char a = c.controll('l');
+    s.Move(a);
+    s.Draw(v, s.head_x, s.head_y, 3, a);
+
     wrefresh(win1);
     //inner box
     //s.Move(14);
@@ -72,6 +81,5 @@ void Map::getMap()
         }
         i++;
     }
-    s.init_pos(v);
     infile.close();
 }

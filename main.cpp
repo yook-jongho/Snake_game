@@ -11,8 +11,8 @@ int main()
     m.getMap();
     while (1)
     {
-        m.render();
-        usleep(500000);
+        m.render();     //화면 렌더링
+        usleep(500000); // 0.5 딜레이
     }
     endwin();
     // while (a < 10)

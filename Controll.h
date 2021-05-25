@@ -1,9 +1,6 @@
 #include <ncurses.h>
-
 class Controll
 {
 public:
-    void controll()
-    {
-    }
+    char controll(char dir);
 };

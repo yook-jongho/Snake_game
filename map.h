@@ -5,4 +5,5 @@ public:
 
     void getMap();
     void render();
+    void upDate();
 };
