@@ -1,4 +1,5 @@
 #include <fstream>
+#include <random>
 #include <iostream>
 #include <ncurses.h>
 #include <vector>
@@ -11,6 +12,7 @@
 using namespace std;
 Snake s;
 Controll c;
+int i = 0;
 
 void Map::render()
 {
@@ -23,34 +25,27 @@ void Map::render()
 
     mvprintw(2, 2, "<snake game>");
 
-    WINDOW *win1;
-    win1 = newwin(25, 25, 3, 3);
-    //mvwprintw(win1, 1, 1, "A new window");
-    //wborder(win1, '@', '@', '@', '@', '@', '@', '@', '@');
+    WINDOW *gamebox;
+    gamebox = newwin(25, 25, 3, 3);
 
+    WINDOW *scoreBox;
+    scoreBox = newwin(12, 10, 3, 30);
+    box(scoreBox, 0, 0);
+
+    upDate();
     for (int i = 0; i < 25; i++)
     {
         for (int j = 0; j < 25; j++)
         {
-            wprintw(win1, "%c", v[i][j]);
-            if (v[i][j] == '0')
-                v[i][j] = ' ';
-            if (v[i][j] == '@')
-            {
-                s.head_x = j;
-                s.head_y = i;
-                v[i][j] = ' ';
-            }
+            wprintw(gamebox, "%c", v[i][j]);
         }
     }
-    char a = c.controll('l');
-    s.Move(a);
-    s.Draw(v, s.head_x, s.head_y, 3, a);
+    wrefresh(gamebox);
+    wrefresh(scoreBox);
 
-    wrefresh(win1);
     //inner box
     //s.Move(14);
-    delwin(win1);
+    delwin(gamebox);
 }
 
 //map 파일을 받아와 배열에 저장.
@@ -82,4 +77,49 @@ void Map::getMap()
         i++;
     }
     infile.close();
+}
+
+void Map::upDate()
+{
+    char a = s.direction;
+    char b = c.controll(a);
+    bool check = c.check_dir(a, b);
+
+    for (int i = 0; i < 25; i++)
+    {
+        for (int j = 0; j < 25; j++)
+        {
+            if (v[i][j] == '0')
+                v[i][j] = ' ';
+            if (v[i][j] == '@')
+            {
+                s.head_x = j;
+                s.head_y = i;
+                v[i][j] = ' ';
+            }
+        }
+    }
+    //s.makeBon(s.head_x, s.head_y, a, check);
+    s.Move(a);
+    s.Draw(v, s.head_x, s.head_y, 3, a);
+    s.direction = b;
+    item(i);
+    i++;
+}
+
+void Map::item(int count)
+{
+    if (count % 10 == 0)
+    {
+        random_device rd;
+        mt19937 gen(rd());
+
+        uniform_int_distribution<int> dis(1, 24);
+
+        int a = dis(gen);
+        int b = dis(gen);
+
+        v[a][b] = '$';
+        count = 0;
+    }
 }

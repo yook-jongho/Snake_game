@@ -118,11 +118,14 @@ void Snake::Draw(char v[][25], int x, int y, int len, char dir)
     tail_y = y;
 }
 //void Controll(char v[][25], int x, int y);
-void Snake::makeBon(int x, int y, char dir)
+void Snake::makeBon(int x, int y, char dir, bool check)
 {
-    bon.insert(bon.begin(), y);
-    bon.insert(bon.begin(), x);
-    bondir.insert(bondir.begin(), dir);
+    if (check)
+    {
+        bon.insert(bon.begin(), y);
+        bon.insert(bon.begin(), x);
+        bondir.insert(bondir.begin(), dir);
+    }
 }
 void Snake::removeBon()
 {
@@ -130,3 +133,7 @@ void Snake::removeBon()
     bon.pop_back();
     bondir.pop_back();
 };
+
+void Snake::gameOut()
+{
+}

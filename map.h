@@ -6,4 +6,5 @@ public:
     void getMap();
     void render();
     void upDate();
+    void item(int count);
 };

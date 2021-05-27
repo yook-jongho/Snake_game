@@ -12,7 +12,7 @@ int main()
     while (1)
     {
         m.render();     //화면 렌더링
-        usleep(500000); // 0.5 딜레이
+        usleep(500000); // 0.1 딜레이
     }
     endwin();
     // while (a < 10)

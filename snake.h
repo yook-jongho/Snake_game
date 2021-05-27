@@ -16,8 +16,9 @@ public:
     void Draw(char v[][25], int x, int y, int len, char dir);
 
     //void Controll(char v[][25], int x, int y);
-    void makeBon(int x, int y, char dir);
+    void makeBon(int x, int y, char dir, bool check);
     void removeBon();
 
     void Move(char dir);
+    void gameOut();
 };
