@@ -46,3 +46,30 @@ bool Controll::check_dir(char dir1, char dir2)
     }
     return check;
 }
+
+bool Controll::check_wall(int x, int y)
+{
+    bool check;
+    if (x == 0 || y == 0 || x == 24 || y == 24)
+    {
+        check = false;
+    }
+    else
+    {
+        check = true;
+    }
+
+    return check;
+}
+
+bool Controll::check_item(int x, int y, int a, int b)
+{
+    if (x == b && y == a)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}

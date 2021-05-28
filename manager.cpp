@@ -1,9 +1,9 @@
 #include <ncurses.h>
 #include "manager.h"
 
-int Manager::gameScore(char item)
+int Manager::gameScore(bool check, int score)
 {
-    if (item == '$')
+    if (check)
     {
         score += 10;
     }

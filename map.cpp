@@ -13,7 +13,11 @@ Snake s;
 Controll c;
 Manager manager;
 int i = 0;
-bool check = true;
+bool check1 = true;
+bool check2 = true;
+
+int item_x, item_y = 0;
+int score = 0;
 
 //게임 화면을 그리는 함수
 bool Map::render()
@@ -33,6 +37,7 @@ bool Map::render()
     WINDOW *scoreBox;
     scoreBox = newwin(12, 10, 3, 30);
     box(scoreBox, 0, 0); //테두리를 표시. box 영역
+    mvwprintw(scoreBox, 1, 1, "score : %d", score);
 
     upDate();
     for (int i = 0; i < 25; i++)
@@ -42,10 +47,11 @@ bool Map::render()
             wprintw(gamebox, "%c", v[i][j]);
         }
     }
-    if (!check)
+    if (!check1 || !check2)
     {
         mvprintw(2, 9, "<<game over>>");
     }
+
     refresh();
     wrefresh(gamebox);
     wrefresh(scoreBox);
@@ -55,7 +61,7 @@ bool Map::render()
     delwin(gamebox);
     delwin(scoreBox);
 
-    if (!check)
+    if (!check1 || !check2)
     {
         return false;
     }
@@ -101,16 +107,30 @@ void Map::upDate()
     //뱀 머리의 방향 확인.
     char a = s.direction;
     char b = c.controll(a);
-    check = c.check_dir(a, b);
+    check1 = c.check_dir(a, b);
+    check2 = c.check_wall(s.head_x, s.head_y);
 
-    if (!check)
+    if (!check1 || !check2)
     {
         for (int i = 0; i < 25; i++)
         {
             for (int j = 0; j < 25; j++)
             {
-                if (v[i][j] == '0' || v[i][j] == '@')
+                if (!check1)
+                {
                     v[i][j] = ' ';
+                }
+                else if (!check2)
+                {
+                    if (v[i][j] == '0')
+                    {
+                        v[i][j] = ' ';
+                    }
+                    else if (v[i][j] == '@')
+                    {
+                        v[i][j] = '+';
+                    }
+                }
             }
         }
     }
@@ -130,7 +150,8 @@ void Map::upDate()
                 }
             }
         }
-
+        bool check_score = c.check_item(s.head_x, s.head_y, item_x, item_y);
+        score = manager.gameScore(check_score, score);
         s.Move(a);
         s.Draw(v, s.head_x, s.head_y, 3, a);
         s.direction = b;
@@ -141,22 +162,21 @@ void Map::upDate()
 
 void Map::item()
 {
-    int a, b;
     if (i == 50)
     {
-        if (a >= 0 || b >= 0)
+        if (item_x >= 0 || item_y >= 0)
         {
-            v[a][b] = ' ';
+            v[item_x][item_y] = ' ';
         }
         random_device rd;
         mt19937 gen(rd());
 
         uniform_int_distribution<int> dis(5, 28);
 
-        a = dis(gen);
-        b = dis(gen);
+        item_x = dis(gen);
+        item_y = dis(gen);
 
-        v[a][b] = '$';
+        v[item_x][item_y] = '$';
         i = 0;
     }
 }

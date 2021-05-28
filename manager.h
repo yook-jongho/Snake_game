@@ -1,6 +1,5 @@
 class Manager
 {
 public:
-    int score = 0;
-    int gameScore(char item);
+    int gameScore(bool check, int score);
 };
