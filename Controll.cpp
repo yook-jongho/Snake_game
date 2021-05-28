@@ -16,7 +16,6 @@ char Controll::controll(char dir)
     {
     case KEY_UP:
         dir = 'u';
-
         break;
     case KEY_LEFT:
         dir = 'l';
@@ -37,13 +36,13 @@ char Controll::controll(char dir)
 bool Controll::check_dir(char dir1, char dir2)
 {
     bool check;
-    if (dir1 != dir2)
+    if ((dir1 == 'u' && dir2 == 'd') || (dir1 == 'd' && dir2 == 'u') || (dir1 == 'l' && dir2 == 'r') || (dir1 == 'r' && dir2 == 'l'))
     {
-        check = true;
+        check = false;
     }
     else
     {
-        check = false;
+        check = true;
     }
     return check;
 }
