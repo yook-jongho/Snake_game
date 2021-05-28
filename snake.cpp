@@ -8,21 +8,58 @@ void Snake::Move(char dir)
 {
     if (dir == 'l')
     {
-        head_x--;
+        direction = 'l';
+        body_x.push_front(head_x--);
+        body_x.pop_back();
+        body_y.push_front(head_y);
+        body_y.pop_back();
     }
     if (dir == 'r')
     {
-        head_x++;
+        direction = 'r';
+        body_x.push_front(head_x++);
+        body_x.pop_back();
+        body_y.push_front(head_y);
+        body_y.pop_back();
     }
     if (dir == 'u')
     {
-        head_y--;
+        direction = 'u';
+        body_y.push_front(head_y--);
+        body_y.pop_back();
+        body_x.push_front(head_x);
+        body_x.pop_back();
     }
     if (dir == 'd')
     {
-        head_y++;
+        direction = 'd';
+        body_y.push_front(head_y++);
+        body_y.pop_back();
+        body_x.push_front(head_x);
+        body_x.pop_back();
     }
 }
+void Snake::Draw(char v[][25], int x, int y, int len, char dir)
+{
+    v[y][x] = '@';
+    int s = body_y.size();
+    if (s == 0)
+    {
+        body_x.push_back(13);
+        body_x.push_back(14);
+        body_x.push_back(15);
+        body_y.push_back(13);
+        body_y.push_back(13);
+        body_y.push_back(13);
+    }
+    for (int i = 1; i < s; i++)
+    {
+        v[body_y[i]][body_x[i]] = '0';
+    }
+    tail_x = x;
+    tail_y = y;
+}
+/*
 void Snake::Draw(char v[][25], int x, int y, int len, char dir)
 {
 
@@ -117,23 +154,17 @@ void Snake::Draw(char v[][25], int x, int y, int len, char dir)
     tail_x = x;
     tail_y = y;
 }
+*/
 //void Controll(char v[][25], int x, int y);
-void Snake::makeBon(int x, int y, char dir, bool check)
+void Snake::makeBon(int x, int y, char dir)
 {
-    if (check)
-    {
-        bon.insert(bon.begin(), y);
-        bon.insert(bon.begin(), x);
-        bondir.insert(bondir.begin(), dir);
-    }
+    body_y.push_front(y);
+    body_x.push_front(x);
+    bondir.insert(bondir.begin(), dir);
 }
 void Snake::removeBon()
 {
-    bon.pop_back();
-    bon.pop_back();
+    body_y.pop_back();
+    body_x.pop_back();
     bondir.pop_back();
 };
-
-void Snake::gameOut()
-{
-}

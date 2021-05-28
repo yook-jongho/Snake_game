@@ -12,7 +12,13 @@ int main()
     while (1)
     {
         m.render();     //화면 렌더링
-        usleep(500000); // 0.1 딜레이
+        usleep(200000); // 0.1 딜레이
+        if (!m.render())
+        {
+            //게임 재시작 함수 호출,  false이면, break. true이면 continue.
+            usleep(10000000);
+            break;
+        }
     }
     endwin();
     // while (a < 10)
