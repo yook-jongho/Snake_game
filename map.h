@@ -8,4 +8,5 @@ public:
     void upDate();
     void grow_item();  //item 멥에 표시해주는 함수
     void small_item(); //item 멥에 표시해주는 함수
+    void potal();
 };

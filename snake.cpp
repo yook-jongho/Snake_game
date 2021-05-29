@@ -4,165 +4,259 @@
 #include "map.h"
 #include <iostream>
 
-void Snake::Move(char dir)
+void Snake::Move(char dir, char v[][25], int gate[][2])
 {
     if (dir == 'l')
     {
         direction = 'l';
-        body_x.push_front(head_x--);
-        body_x.pop_back();
-        body_y.push_front(head_y);
-        body_y.pop_back();
+        head_x--;
+        rebody();
     }
-    if (dir == 'r')
+    else if (dir == 'r')
     {
         direction = 'r';
-        body_x.push_front(head_x++);
-        body_x.pop_back();
-        body_y.push_front(head_y);
-        body_y.pop_back();
+        head_x++;
+        rebody();
     }
-    if (dir == 'u')
+    else if (dir == 'u')
     {
         direction = 'u';
-        body_y.push_front(head_y--);
-        body_y.pop_back();
-        body_x.push_front(head_x);
-        body_x.pop_back();
+        head_y--;
+        rebody();
     }
-    if (dir == 'd')
+    else if (dir == 'd')
     {
         direction = 'd';
-        body_y.push_front(head_y++);
-        body_y.pop_back();
-        body_x.push_front(head_x);
-        body_x.pop_back();
+        head_y++;
+        rebody();
+    }
+
+    if (head_y == gate[0][0] && head_x == gate[0][1])
+    {
+        if (gate[1][0] == 0)
+        {
+            head_y = gate[1][0] + 1;
+            head_x = gate[1][1];
+            pass();
+            direction = 'd';
+        }
+        else if (gate[1][0] == 24)
+        {
+            head_y = gate[1][0] - 1;
+            head_x = gate[1][1];
+            pass();
+            direction = 'u';
+        }
+        else if (gate[1][1] == 24)
+        {
+            head_y = gate[1][0];
+            head_x = gate[1][1] - 1;
+            pass();
+            direction = 'l';
+        }
+        else if (gate[1][1] == 0)
+        {
+            head_y = gate[1][0];
+            head_x = gate[1][1] + 1;
+            pass();
+            direction = 'r';
+        }
+        if (direction = 'l')
+        {
+            if (v[gate[1][0]][gate[1][1] - 1] == ' ')
+            {
+                head_y = gate[1][0];
+                head_x = gate[1][1] - 1;
+                pass();
+                direction = 'l';
+            }
+            else if (v[gate[1][0] - 1][gate[1][1]] == ' ')
+            {
+                head_y = gate[1][0] - 1;
+                head_x = gate[1][1];
+                pass();
+                direction = 'u';
+            }
+            else if (v[gate[1][0]][gate[1][1] + 1] == ' ')
+            {
+                head_y = gate[1][0];
+                head_x = gate[1][1] + 1;
+                pass();
+                direction = 'r';
+            }
+            else if (v[gate[1][0] + 1][gate[1][1]] == ' ')
+            {
+                head_y = gate[1][0] + 1;
+                head_x = gate[1][1];
+                pass();
+                direction = 'd';
+            }
+        }
+        else if (direction = 'u')
+        {
+            if (v[gate[1][0] - 1][gate[1][1]] == ' ')
+            {
+                head_y = gate[1][0] - 1;
+                head_x = gate[1][1];
+                pass();
+                direction = 'u';
+            }
+            else if (v[gate[1][0]][gate[1][1] + 1] == ' ')
+            {
+                head_y = gate[1][0];
+                head_x = gate[1][1] + 1;
+                pass();
+                direction = 'r';
+            }
+            else if (v[gate[1][0] + 1][gate[1][1]] == ' ')
+            {
+                head_y = gate[1][0] + 1;
+                head_x = gate[1][1];
+                pass();
+                direction = 'd';
+            }
+            else if (v[gate[1][0]][gate[1][1] - 1] == ' ')
+            {
+                head_y = gate[1][0];
+                head_x = gate[1][1] - 1;
+                pass();
+                direction = 'l';
+            }
+        }
+        else if (direction = 'r')
+        {
+            if (v[gate[1][0]][gate[1][1] + 1] == ' ')
+            {
+                head_y = gate[1][0];
+                head_x = gate[1][1] + 1;
+                pass();
+                direction = 'r';
+            }
+            else if (v[gate[1][0] + 1][gate[1][1]] == ' ')
+            {
+                head_y = gate[1][0] + 1;
+                head_x = gate[1][1];
+                pass();
+                direction = 'd';
+            }
+            else if (v[gate[1][0]][gate[1][1] - 1] == ' ')
+            {
+                head_y = gate[1][0];
+                head_x = gate[1][1] - 1;
+                pass();
+                direction = 'l';
+            }
+            else if (v[gate[1][0] - 1][gate[1][1]] == ' ')
+            {
+                head_y = gate[1][0] - 1;
+                head_x = gate[1][1];
+                pass();
+                direction = 'u';
+            }
+        }
+        else if (direction = 'd')
+        {
+            if (v[gate[1][0] + 1][gate[1][1]] == ' ')
+            {
+                head_y = gate[1][0] + 1;
+                head_x = gate[1][1];
+                pass();
+                direction = 'd';
+            }
+            else if (v[gate[1][0]][gate[1][1] - 1] == ' ')
+            {
+                head_y = gate[1][0];
+                head_x = gate[1][1] - 1;
+                pass();
+                direction = 'l';
+            }
+            else if (v[gate[1][0] - 1][gate[1][1]] == ' ')
+            {
+                head_y = gate[1][0] - 1;
+                head_x = gate[1][1];
+                pass();
+                direction = 'u';
+            }
+            else if (v[gate[1][0]][gate[1][1] + 1] == ' ')
+            {
+                head_y = gate[1][0];
+                head_x = gate[1][1] + 1;
+                pass();
+                direction = 'r';
+            }
+        }
+    }
+    else if (head_y == gate[1][0] && head_x == gate[1][1])
+    {
+        if (gate[0][0] == 0)
+        {
+            head_y = gate[0][0] + 1;
+            head_x = gate[0][1];
+            pass();
+            direction = 'd';
+        }
+        else if (gate[0][0] == 24)
+        {
+            head_y = gate[0][0] - 1;
+            head_x = gate[0][1];
+            pass();
+            direction = 'u';
+        }
+        else if (gate[0][1] == 24)
+        {
+            head_y = gate[0][0];
+            head_x = gate[0][1] - 1;
+            pass();
+            direction = 'l';
+        }
+        else if (gate[0][1] == 0)
+        {
+            head_y = gate[0][0];
+            head_x = gate[0][1] + 1;
+            pass();
+            direction = 'r';
+        }
     }
 }
-void Snake::Draw(char v[][25], int x, int y, int len, char dir)
+void Snake::pass()
 {
-    v[y][x] = '@';
+    body_y.pop_front();
+    body_x.pop_front();
+    body_y.push_front(head_y);
+    body_x.push_front(head_x);
+}
+void Snake::rebody()
+{
+    body_y.push_front(head_y);
+    body_y.pop_back();
+    body_x.push_front(head_x);
+    body_x.pop_back();
+}
+void Snake::Draw(char v[][25], int x, int y, char dir, int len)
+{
     int s = len;
     if (s == 0)
     {
         body_x.push_back(13);
         body_x.push_back(14);
+        body_x.push_back(15);
+        body_y.push_back(13);
         body_y.push_back(13);
         body_y.push_back(13);
     }
-    for (int i = 1; i < s; i++)
+    for (int i = 0; i < s; i++)
     {
-        v[body_y[i]][body_x[i]] = '0';
+        if (i == 0)
+        {
+            v[body_y[i]][body_x[i]] = '@';
+        }
+        else
+        {
+            v[body_y[i]][body_x[i]] = '0';
+        }
     }
-    tail_x = x;
-    tail_y = y;
-}
-/*
-void Snake::Draw(char v[][25], int x, int y, int len, char dir)
-{
+    //v[body_y[0]][body_x[0]] = '@';
 
-    v[y][x] = '@';
-    int curv = 0;
-    int count = 0;
-    int s = bondir.size();
-    for (int a = 0; a < s; a += 2)
-    {
-        if (x == bon[a])
-        {
-            if (y < bon[a + 1])
-            {
-                while (y != bon[a + 1])
-                {
-                    y++;
-                    v[y][x] = '0';
-                    count++;
-                }
-            }
-            else
-            {
-                while (y != bon[a + 1])
-                {
-                    y--;
-                    v[y][x] = '0';
-                    count++;
-                }
-            }
-        }
-        if (y == bon[a])
-        {
-            if (x < bon[a + 1])
-            {
-                while (y != bon[a + 1])
-                {
-                    x++;
-                    v[y][x] = '0';
-                    count++;
-                }
-            }
-            else
-            {
-                while (x != bon[a + 1])
-                {
-                    x--;
-                    v[y][x] = '0';
-                    count++;
-                }
-            }
-        }
-    }
-    if (s == 0 || count != len)
-    {
-        if (dir == 'l')
-        {
-            while (count != len)
-            {
-                x++;
-                v[y][x] = '0';
-                count++;
-            }
-        }
-        if (dir == 'r')
-        {
-            while (count != len)
-            {
-                x--;
-                v[y][x] = '0';
-                count++;
-            }
-        }
-        if (dir == 'u')
-        {
-            while (count != len)
-            {
-                y--;
-                v[y][x] = '0';
-                count++;
-            }
-        }
-        if (dir == 'd')
-        {
-            while (count != len)
-            {
-                y++;
-                v[y][x] = '0';
-                count++;
-            }
-        }
-    }
     tail_x = x;
     tail_y = y;
 }
-*/
-//void Controll(char v[][25], int x, int y);
-void Snake::makeBon(int x, int y, char dir)
-{
-    body_y.push_front(y);
-    body_x.push_front(x);
-    bondir.insert(bondir.begin(), dir);
-}
-void Snake::removeBon()
-{
-    body_y.pop_back();
-    body_x.pop_back();
-    bondir.pop_back();
-};
