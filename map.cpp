@@ -16,7 +16,8 @@ int i = 0;
 bool check1 = true;
 bool check2 = true;
 
-int item_x, item_y = 0;
+int item_gx, item_gy = 0;
+int item_sx, item_sy = 0;
 int score = 0;
 
 //게임 화면을 그리는 함수
@@ -35,7 +36,7 @@ bool Map::render()
     gamebox = newwin(25, 25, 3, 3);
 
     WINDOW *scoreBox;
-    scoreBox = newwin(12, 10, 3, 30);
+    scoreBox = newwin(12, 16, 3, 40);
     box(scoreBox, 0, 0); //테두리를 표시. box 영역
     mvwprintw(scoreBox, 1, 1, "score : %d", score);
 
@@ -150,33 +151,55 @@ void Map::upDate()
                 }
             }
         }
-        bool check_score = c.check_item(s.head_x, s.head_y, item_x, item_y);
-        score = manager.gameScore(check_score, score);
+        bool check_gitem = c.check_item(s.head_x, s.head_y, item_gx, item_gy);
+        bool check_sitem = c.check_item(s.head_x, s.head_y, item_sx, item_sy);
+        score = manager.gameScore(check_gitem, check_sitem, score);
         s.Move(a);
         s.Draw(v, s.head_x, s.head_y, 3, a);
         s.direction = b;
-        item();
+        grow_item();
+        small_item();
         i++;
     }
 }
 
-void Map::item()
+void Map::grow_item()
 {
     if (i == 50)
     {
-        if (item_x >= 0 || item_y >= 0)
+        if (item_gx >= 0 || item_gy >= 0)
         {
-            v[item_x][item_y] = ' ';
+            v[item_gx][item_gy] = ' ';
         }
         random_device rd;
         mt19937 gen(rd());
 
-        uniform_int_distribution<int> dis(5, 28);
+        uniform_int_distribution<int> dis(1, 23);
 
-        item_x = dis(gen);
-        item_y = dis(gen);
+        item_gx = dis(gen);
+        item_gy = dis(gen);
 
-        v[item_x][item_y] = '$';
+        v[item_gx][item_gy] = 'G';
+    }
+}
+
+void Map::small_item()
+{
+    if (i == 50)
+    {
+        if (item_sx >= 0 || item_sy >= 0)
+        {
+            v[item_sx][item_sy] = ' ';
+        }
+        random_device rd;
+        mt19937 gen(rd());
+
+        uniform_int_distribution<int> dis(1, 23);
+
+        item_sx = dis(gen);
+        item_sy = dis(gen);
+
+        v[item_sx][item_sy] = 'S';
         i = 0;
     }
 }
