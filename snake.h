@@ -15,7 +15,7 @@ public:
     vector<int> bon;
     vector<char> bondir;
     int tail_x, tail_y;
-    int length;
+    int length = 2;
     char direction = 'l';
     int position_x, position_y;
     void Draw(char v[][25], int x, int y, int len, char dir);

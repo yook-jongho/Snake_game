@@ -42,13 +42,11 @@ void Snake::Move(char dir)
 void Snake::Draw(char v[][25], int x, int y, int len, char dir)
 {
     v[y][x] = '@';
-    int s = body_y.size();
+    int s = len;
     if (s == 0)
     {
         body_x.push_back(13);
         body_x.push_back(14);
-        body_x.push_back(15);
-        body_y.push_back(13);
         body_y.push_back(13);
         body_y.push_back(13);
     }

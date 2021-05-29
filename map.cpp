@@ -154,8 +154,9 @@ void Map::upDate()
         bool check_gitem = c.check_item(s.head_x, s.head_y, item_gx, item_gy);
         bool check_sitem = c.check_item(s.head_x, s.head_y, item_sx, item_sy);
         score = manager.gameScore(check_gitem, check_sitem, score);
+        s.length = manager.snakeLength(check_gitem, check_sitem, s.length);
         s.Move(a);
-        s.Draw(v, s.head_x, s.head_y, 3, a);
+        s.Draw(v, s.head_x, s.head_y, s.length, a);
         s.direction = b;
         grow_item();
         small_item();
