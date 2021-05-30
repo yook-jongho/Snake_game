@@ -46,7 +46,7 @@ bool Map::render()
     scoreBox = newwin(12, 16, 3, 40);
     box(scoreBox, 0, 0); //테두리를 표시. box 영역
     mvwprintw(scoreBox, 1, 1, "score : %d", score);
-    mvwprintw(scoreBox, 2, 1, " %d /  %d ", s.length + 1, 13);
+    mvwprintw(scoreBox, 2, 1, " %d /  %d ", s.length, 13);
     mvwprintw(scoreBox, 3, 1, "+ : %d", count_gitem);
     mvwprintw(scoreBox, 4, 1, "- : %d", count_sitem);
 
