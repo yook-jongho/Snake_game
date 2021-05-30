@@ -28,6 +28,7 @@ int count_gitem = 0;
 int count_sitem = 0;
 int potal_time = 0;
 
+int count_potal = 0;
 char sucess1 = 'x';
 char sucess2 = 'x';
 char sucess3 = 'x';
@@ -49,19 +50,20 @@ void Map::render()
     gamebox = newwin(25, 25, 3, 3);
 
     WINDOW *scoreBox;
-    scoreBox = newwin(6, 16, 3, 40);
+    scoreBox = newwin(7, 16, 3, 40);
     box(scoreBox, 0, 0); //테두리를 표시. box 영역
     mvwprintw(scoreBox, 1, 1, "score : %d", score);
     mvwprintw(scoreBox, 2, 1, " %d /  %d ", s.length + 1, 13);
     mvwprintw(scoreBox, 3, 1, "+ : %d", count_gitem);
     mvwprintw(scoreBox, 4, 1, "- : %d", count_sitem);
+    mvwprintw(scoreBox, 5, 1, "# : %d", count_potal);
 
     WINDOW *MissonBox;
-    MissonBox = newwin(7, 16, 10, 40);
+    MissonBox = newwin(7, 16, 11, 40);
     box(MissonBox, 0, 0); //테두리를 표시. box 영역
     mvwprintw(MissonBox, 1, 1, "Misson");
-    mvwprintw(MissonBox, 2, 1, "B: 20 %c", sucess1);
-    mvwprintw(MissonBox, 3, 1, "B: 20 %c", sucess2);
+    mvwprintw(MissonBox, 2, 1, "B: 4 %c", sucess1);
+    mvwprintw(MissonBox, 3, 1, "s: 20 %c", sucess2);
     mvwprintw(MissonBox, 4, 1, "+ : 2 %c", sucess3);
     mvwprintw(MissonBox, 5, 1, "- : 0 %c", sucess4);
 

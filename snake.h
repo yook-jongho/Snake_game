@@ -12,17 +12,10 @@ public:
     deque<int> body_x;
     deque<int> body_y;
 
-    vector<int> bon;
-    vector<char> bondir;
     int tail_x, tail_y;
-    int length = 2;
+    int length = 3;
     char direction = 'l';
-    int position_x, position_y;
     void Draw(char v[][25], int x, int y, int len);
-
-    //void Controll(char v[][25], int x, int y);
-    void makeBon(int x, int y, char dir);
-    void removeBon();
 
     void Move(char dir);
 };

@@ -1,8 +1,4 @@
-#include <ncurses.h>
-#include <cstring>
 #include "snake.h"
-#include "map.h"
-#include <iostream>
 
 void Snake::Move(char dir)
 {
@@ -50,23 +46,10 @@ void Snake::Draw(char v[][25], int x, int y, int len)
         body_y.push_back(13);
         body_y.push_back(13);
     }
-    for (int i = 0; i < s; i++)
+    for (int i = 0; i < s - 1; i++)
     {
         v[body_y[i]][body_x[i]] = '0';
     }
     tail_x = x;
     tail_y = y;
 }
-
-void Snake::makeBon(int x, int y, char dir)
-{
-    body_y.push_front(y);
-    body_x.push_front(x);
-    bondir.insert(bondir.begin(), dir);
-}
-void Snake::removeBon()
-{
-    body_y.pop_back();
-    body_x.pop_back();
-    bondir.pop_back();
-};
