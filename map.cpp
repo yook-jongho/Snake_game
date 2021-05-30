@@ -27,8 +27,14 @@ int gate[][2] = {{0}};
 int count_gitem = 0;
 int count_sitem = 0;
 int potal_time = 0;
+
+char sucess1 = 'x';
+char sucess2 = 'x';
+char sucess3 = 'x';
+char sucess4 = 'x';
+
 //게임 화면을 그리는 함수
-bool Map::render()
+void Map::render()
 {
 
     initscr();
@@ -43,12 +49,21 @@ bool Map::render()
     gamebox = newwin(25, 25, 3, 3);
 
     WINDOW *scoreBox;
-    scoreBox = newwin(12, 16, 3, 40);
+    scoreBox = newwin(6, 16, 3, 40);
     box(scoreBox, 0, 0); //테두리를 표시. box 영역
     mvwprintw(scoreBox, 1, 1, "score : %d", score);
-    mvwprintw(scoreBox, 2, 1, " %d /  %d ", s.length, 13);
+    mvwprintw(scoreBox, 2, 1, " %d /  %d ", s.length + 1, 13);
     mvwprintw(scoreBox, 3, 1, "+ : %d", count_gitem);
     mvwprintw(scoreBox, 4, 1, "- : %d", count_sitem);
+
+    WINDOW *MissonBox;
+    MissonBox = newwin(7, 16, 10, 40);
+    box(MissonBox, 0, 0); //테두리를 표시. box 영역
+    mvwprintw(MissonBox, 1, 1, "Misson");
+    mvwprintw(MissonBox, 2, 1, "B: 20 %c", sucess1);
+    mvwprintw(MissonBox, 3, 1, "B: 20 %c", sucess2);
+    mvwprintw(MissonBox, 4, 1, "+ : 2 %c", sucess3);
+    mvwprintw(MissonBox, 5, 1, "- : 0 %c", sucess4);
 
     upDate();
     for (int i = 0; i < 25; i++)
@@ -61,34 +76,60 @@ bool Map::render()
     if (!check1 || !check2)
     {
         mvprintw(2, 9, "<<game over>>");
+        if (!check1)
+        {
+            mvprintw(3, 3, "because of input opposite key");
+        }
+        if (!check2)
+        {
+            mvprintw(3, 3, "because of complict the wall");
+        }
     }
 
-    refresh();
     wrefresh(gamebox);
+    refresh();
     wrefresh(scoreBox);
+    wrefresh(MissonBox);
 
     //inner box
     //s.Move(14);
     delwin(gamebox);
     delwin(scoreBox);
+    delwin(MissonBox);
 
     if (!check1 || !check2)
     {
-        return false;
+        gameOver = false;
     }
     else
     {
-        return true;
+        gameOver = true;
     }
 }
 
 //map 파일을 받아와 배열에 저장.
-void Map::getMap()
+void Map::getMap(int l)
 {
     int i = 0;
 
     ifstream infile;
-    infile.open("map1.txt");
+    if (level == 0)
+    {
+
+        infile.open("map1.txt");
+    }
+    else if (level == 1)
+    {
+        infile.open("map2.txt");
+    }
+    else if (level == 2)
+    {
+        infile.open("map3.txt");
+    }
+    else
+    {
+        infile.open("map4.txt");
+    }
     char buffer[30];
 
     while (infile.getline(buffer, 30))
@@ -127,21 +168,7 @@ void Map::upDate()
         {
             for (int j = 0; j < 25; j++)
             {
-                if (!check1 || s.length < 2)
-                {
-                    v[i][j] = ' ';
-                }
-                else if (!check2)
-                {
-                    if (v[i][j] == '0')
-                    {
-                        v[i][j] = ' ';
-                    }
-                    else if (v[i][j] == '@')
-                    {
-                        v[i][j] = '+';
-                    }
-                }
+                v[i][j] = ' ';
             }
         }
     }
@@ -165,10 +192,9 @@ void Map::upDate()
         score = manager.gameScore(check_gitem, check_sitem, score);         //점수 계산
         s.length = manager.snakeLength(check_gitem, check_sitem, s.length); //길이 계산
 
-        s.Draw(v, s.head_x, s.head_y, a, s.length);
-
+        s.Move(a);
+        s.Draw(v, s.head_x, s.head_y, s.length);
         s.direction = b;
-        s.Move(b, v, gate);
 
         grow_item();
         small_item();
@@ -185,6 +211,23 @@ void Map::upDate()
         if (check_sitem)
         {
             count_sitem++;
+        }
+        levelUp(score, s.length, count_gitem, count_sitem);
+        if (score > 20)
+        {
+            sucess1 = '0';
+        }
+        else if (s.length > 4)
+        {
+            sucess2 = '0';
+        }
+        else if (count_gitem > 2)
+        {
+            sucess3 = '0';
+        }
+        else
+        {
+            sucess4 = '0';
         }
     }
 }
@@ -271,5 +314,17 @@ void Map::potal()
         v[potal_x][potal_y] = '#';
         v[potal_x2][potal_y2] = '#';
         potal_time = 0;
+    }
+}
+
+void Map::levelUp(int score, int length, int plus, int minus)
+{
+    if (score % 10 >= 2 && length >= 4 && plus >= 1 && minus >= 0)
+    {
+        islevelup = true;
+    }
+    else
+    {
+        islevelup = false;
     }
 }
