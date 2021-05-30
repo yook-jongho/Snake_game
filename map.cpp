@@ -236,8 +236,8 @@ void Map::potal()
     {
         if (potal_x >= 0 || potal_y >= 0)
         {
-            v[potal_x][potal_y] = ' ';
-            v[potal_x2][potal_y2] = ' ';
+            v[potal_x][potal_y] = '+';
+            v[potal_x2][potal_y2] = '+';
         }
 
         time_t tp = time(NULL);
